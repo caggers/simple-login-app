@@ -13,29 +13,27 @@ Scenario: Enter User credentials
 	Given I am a registered User
 	When I fill in my username and password credentials
 	And I click submit
-	Then my credentials should be checked
-
-Examples: Valid
-| username 	| password 	|
-| admin 	| admin		|
-| user		| user 		|
-Examples: Invalid
-| username 	| password 	|
-| 1234		| 5678		|
-| betty		| spagetti	|
-
+	Then my credentials should be submitted
 
 Scenario: Check User credentials for a registered User
 	Given I am a registered User logging in
 	When my credentials are sent for authentication
 	And they pass
-	Then I should log into the system
+	Then I am logged into the system
 	And I can see the App
+Examples: Valid
+| username 	| password 	|
+| admin 		| admin			|
+| user			| user 			|
 
 Scenario: Check User credentials for an unregistered User
 	Given I am not registered user logging in
 	When my invalid credentials are sent for authentication
 	And they do not pass
-	Then I should see an error message
+	Then I see an error message
+Examples: Invalid
+| username 	| password 	|
+| 1234			| 5678			|
+| betty			| spagetti	|
 
 

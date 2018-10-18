@@ -1,57 +1,59 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import Login from './Login';
 
 describe('Login', () => {
-  const login = shallow(<Login />);
+  const mockSubmit = jest.fn();
+  const username = 'user';
+  const pword = 'user';
+  const props = {
+    username: username,
+    password: pword,
+    handleBtnClick: mockSubmit,
+  };
+  let wrapper = shallow(<Login {...props} />);
 
   it('renders correctly', () => {
-    expect(login).toMatchSnapshot();
+    expect(wrapper).toMatchSnapshot();
   });
 
   it('initialises a username and password in `state`', () => {
-    expect(login.state()).toEqual({ username: '', pword: '' });
+    expect(wrapper.state()).toEqual({ username: '', pword: '' });
   });
 
-  describe('User input', () => {
-    const username = 'user';
-    const pword = 'p@$$word';
+  describe('User inputs', () => {
+    const userEvent = { target: { value: username, name: 'username' } };
+    const pwordEvent = { target: { value: pword, name: 'pword' } };
 
+    const userInput = wrapper.find('input.input-username');
+    const pwordInput = wrapper.find('.input-password');
 
-    beforeEach(() => {
-      login
-        .find('.input-username')
-        .simulate('change', { target: { value: username, name: 'username' } });
-      login
-        .find('.input-password')
-        .simulate('change', { target: { value: pword, name: 'pword' } });
+    it('renders the username and password inputs', () => {
+      expect(userInput).toExist();
+      expect(pwordInput).toExist();
     });
 
-    it('renders the inputs', () => {
-      expect(login.find('.input-username')).toExist();
-      expect(login.find('.input-password')).toExist();
+    beforeEach(() => {
+      userInput.simulate('change', userEvent);
+      pwordInput.simulate('change', pwordEvent);
     });
 
     it('when typing into the inputs it updates relevant fields in `state`', () => {
-      expect(login.state().username).toEqual(username);
-      expect(login.state().pword).toEqual(pword);
+      expect(wrapper.state().username).toEqual(username);
+      expect(wrapper.state().pword).toEqual(pword);
     });
   });
 
-  // describe('Password Input', () => {
-   
-  //   beforeEach(() => {
-  //     login
-  //       .find('.input-password')
-  //       .simulate('change', { target: { value: pword, name: 'pword' } });
-  //   });
+  describe('Submit Button', () => {
+    const btnElem = `button.btn-submit`;
+    wrapper = mount(<Login {...props} />);
 
-  //   it('renders the password input', () => {
-      
-  //   });
+    beforeEach(() => {
+      wrapper.find(btnElem).simulate('click', { preventDefault() {} });
+    });
 
-  //   it('when typing into the input it updates the password in `state`', () => {
-      
-  //   });
-  // });
+    it('renders a `submit` button', () => {
+      expect(wrapper.find(btnElem)).toExist();
+    });
+  });
 });

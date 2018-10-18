@@ -1,16 +1,45 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Login renders correctly 1`] = `
-<form>
-  <input
-    className="input-username"
-    name="username"
-    onChange={[Function]}
-  />
-  <input
-    className="input-password"
-    name="pword"
-    onChange={[Function]}
-  />
-</form>
+<div>
+  <h1>
+    Login
+  </h1>
+  <form>
+    <div
+      className="form-row"
+    >
+      <label>
+        Username:
+        <input
+          className="input-username"
+          name="username"
+          onChange={[Function]}
+        />
+      </label>
+    </div>
+    <div
+      className="form-row"
+    >
+      <label>
+        Password:
+        <input
+          className="input-password"
+          name="pword"
+          onChange={[Function]}
+        />
+      </label>
+    </div>
+    <div
+      className="form-row"
+    >
+      <Button
+        className="btn-submit"
+        onClick={[Function]}
+        text="Submit"
+        type="submit"
+      />
+    </div>
+  </form>
+</div>
 `;
