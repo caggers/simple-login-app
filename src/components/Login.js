@@ -7,6 +7,7 @@ class Login extends Component {
     this.state = {
       username: '',
       pword: '',
+
     }
   }
 
@@ -23,7 +24,7 @@ class Login extends Component {
   }
 
   render() {
-    console.log(this.state.buttonClicked);
+    console.log(this.state);
     return(
       <div>
         <h1>Login</h1> 
@@ -34,7 +35,7 @@ class Login extends Component {
               <input 
                 className="input-username"
                 name="username"
-                onChange={this.handleInputChange} 
+                onChange={(e) => {this.setState({ username: e.target.value})}} 
               />
             </label>
           </div>
@@ -53,7 +54,7 @@ class Login extends Component {
               text="Submit"
               className="btn-submit" 
               type="submit"/>
-          </div>      
+          </div> 
         </form>
       </div>
       

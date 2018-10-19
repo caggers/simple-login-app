@@ -3,13 +3,7 @@ import { mount, shallow } from 'enzyme';
 import Login from './Login';
 
 describe('Login', () => {
-  const mockSubmit = jest.fn();
-  const props = {
-    username: '',
-    password: '',
-    handleBtnClick: mockSubmit,
-  };
-  let wrapper = shallow(<Login {...props} />);
+  let wrapper = shallow(<Login />);
 
   it('renders correctly', () => {
     expect(wrapper).toMatchSnapshot();
@@ -48,7 +42,7 @@ describe('Login', () => {
 
   describe('Submit Button', () => {
     const btnElem = `button.btn-submit`;
-    wrapper = mount(<Login {...props} />);
+    wrapper = mount(<Login />);
 
     beforeEach(() => {
       wrapper.find(btnElem).simulate('click', { preventDefault() {} });
@@ -57,5 +51,12 @@ describe('Login', () => {
     it('renders a `submit` button', () => {
       expect(wrapper.find(btnElem)).toExist();
     });
+
+    // it('testing a class method', () => {
+    //   const mockSubmit = jest.fn();
+    //   wrapper.instance().testFn = mockSubmit;
+    //   wrapper.instance().testFn();
+    //   expect(mockSubmit).toHaveBeenCalled();
+    // });
   });
 });
