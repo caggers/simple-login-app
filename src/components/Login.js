@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Button from './Button';
+import { postCredentials } from '../util';
 
 class Login extends Component {
   constructor() {
@@ -19,12 +20,13 @@ class Login extends Component {
     });
   }
 
-  handleBtnClick = (e) => {
+  handleBtnClick = async (e) => {
     e.preventDefault();
+    let postReq = await postCredentials(this.state.username, this.state.pword);
+    console.log(postReq);
   }
 
   render() {
-    console.log(this.state);
     return(
       <div>
         <h1>Login</h1> 
