@@ -18,7 +18,7 @@ describe('it posts the some data to the `API_URL`', () => {
       req = await postCredentials('user', 'user');
       expect(req).toEqual(sampleData);
     } catch (e) {
-      const error = new ErrorMsg();
+      const error = new ErrorMsg(400, 'Error connecting to API');
       expect(e).toEqual(error);
     }
 
@@ -60,9 +60,8 @@ describe('it posts the some data to the `API_URL`', () => {
       req = await postCredentials('user', 'user');
       expect(req).toEqual(sampleRes);
     } catch (e) {
-
-      //When there is a working api these values can be assigned dynamically 
-      const error = new ErrorMsg(e.status, 'Error connecting to API');
+      //When there is a working api these values can be assigned dynamically
+      const error = new ErrorMsg(400, 'Error connecting to API');
       expect(e).toEqual(error);
     }
 

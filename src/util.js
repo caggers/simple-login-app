@@ -17,6 +17,6 @@ export async function postCredentials(user, pword) {
   if (response.status === 200) {
     return response;
   } else {
-    throw new ErrorMsg(response.status, response.data.message);
+    throw new ErrorMsg(400, "Error connecting to API");
   }
 }
