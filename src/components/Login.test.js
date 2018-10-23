@@ -10,7 +10,7 @@ describe('Login', () => {
   });
 
   it('initialises a username and password in `state`', () => {
-    expect(wrapper.state()).toEqual({ username: '', pword: '' });
+    expect(wrapper.state()).toEqual({ username: '', pword: '', error: null });
   });
 
   describe('User inputs', () => {

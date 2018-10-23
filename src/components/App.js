@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import Login from './Login';
-
+import ErrorBoundary from './ErrorBoundary';
 
 class App extends Component {
-
   render() {
     return (
       <div>
-        <Login />
+        <ErrorBoundary>
+          <Login />
+        </ErrorBoundary>
       </div>
     );
   }

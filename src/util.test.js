@@ -3,7 +3,6 @@
 import mockAxios from './__mocks__/axios';
 import { postCredentials, ErrorMsg } from './util';
 
-
 describe('it posts the some data to the `API_URL`', () => {
   let req;
 
@@ -20,9 +19,9 @@ describe('it posts the some data to the `API_URL`', () => {
     try {
       req = await postCredentials('user', 'user');
       expect(req).toEqual(sampleData);
-    } catch(e) {
+    } catch (e) {
       console.log('Error in it posts some data to the backend');
-      throw new Error(e);
+      throw e;
     }
 
     expect(mockAxios.post).toHaveBeenCalledTimes(1);
@@ -44,9 +43,9 @@ describe('it posts the some data to the `API_URL`', () => {
       mockAxios.post.mockReturnValueOnce(sampleRes);
       req = await postCredentials('user', 'user');
       expect(req).toEqual(sampleRes);
-    } catch(e) {
+    } catch (e) {
       console.log('Error receives a 200');
-      throw new Error(e);
+      throw e;
     }
 
     expect(mockAxios.post).toHaveBeenCalledTimes(1);

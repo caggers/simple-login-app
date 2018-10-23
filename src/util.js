@@ -8,9 +8,15 @@ export async function postCredentials(user, pword) {
     const response = await axios.post(API_URL, {
       data: { username: user, pword: pword },
     });
-    return response;
+    return response !== undefined ? response : "Unsuccessful API request";
   } catch(e) {
-    console.log(e);
-    throw new Error(e);
+    if (e instanceof TypeError) {
+      throw TypeError(e);
+    } else if(e instanceof ReferenceError ) {
+      throw ReferenceError(e)
+    } else {
+      // rethrow
+      throw e;
+    }
   }
 }

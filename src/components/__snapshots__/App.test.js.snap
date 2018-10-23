@@ -2,6 +2,8 @@
 
 exports[`App renders correctly 1`] = `
 <div>
-  <Login />
+  <ErrorBoundary>
+    <Login />
+  </ErrorBoundary>
 </div>
 `;

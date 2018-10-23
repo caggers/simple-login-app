@@ -8,7 +8,7 @@ class Login extends Component {
     this.state = {
       username: '',
       pword: '',
-
+      error: null
     }
   }
 
@@ -22,8 +22,14 @@ class Login extends Component {
 
   handleBtnClick = async (e) => {
     e.preventDefault();
-    let postReq = await postCredentials(this.state.username, this.state.pword);
-    // console.log(postReq);
+    try {
+      let postReq = await postCredentials(this.state.username, this.state.pword);
+
+      console.log(postReq);
+    }catch(e) {
+      // Throw on error on an event handler
+      this.setState(() => {throw e; } )
+    }
   }
 
   render() {
