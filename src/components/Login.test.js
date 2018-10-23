@@ -57,7 +57,10 @@ describe('Login', () => {
       wrapper.instance().handleBtnClick = mockSubmit;
       wrapper.instance().handleBtnClick();
       expect(mockSubmit).toHaveBeenCalled();
-    })
-  });
+    });
 
+    it('throws to the `state` to trigger a remount of the component when there is an error', () => {
+      // TODO
+    });
+  });
 });

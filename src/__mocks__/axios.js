@@ -1,3 +1,7 @@
 export default {
-  post: jest.fn(() => Promise.resolve({  })),
+  post: jest.fn(() => {
+    new Promise((resolve, reject) => {
+       resolve({ });
+    });
+  })
 };

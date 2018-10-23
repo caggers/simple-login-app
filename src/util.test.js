@@ -1,7 +1,6 @@
-// This is not a good set of tests for and api
-
+// This isa questionable set of tests for and api
 import mockAxios from './__mocks__/axios';
-import { postCredentials, ErrorMsg } from './util';
+import { postCredentials } from './util';
 
 describe('it posts the some data to the `API_URL`', () => {
   let req;
@@ -14,16 +13,11 @@ describe('it posts the some data to the `API_URL`', () => {
     const sampleData = { data: { username: 'user', pword: 'user' } };
 
     // Create a one off instance where the post function returns specific values
-    mockAxios.post.mockImplementation(() => Promise.resolve(sampleData));
+    mockAxios.post.mockImplementationOnce(() => Promise.resolve(sampleData));
 
-    try {
-      req = await postCredentials('user', 'user');
-      expect(req).toEqual(sampleData);
-    } catch (e) {
-      console.log('Error in it posts some data to the backend');
-      throw e;
-    }
-
+    req = await postCredentials('user', 'user');
+    
+    expect(req).toEqual(sampleData);
     expect(mockAxios.post).toHaveBeenCalledTimes(1);
     expect(mockAxios.post).toHaveBeenCalledWith(
       'http://demo5348002.mockable.io/',
@@ -39,16 +33,19 @@ describe('it posts the some data to the `API_URL`', () => {
       },
     };
 
-    try {
-      mockAxios.post.mockReturnValueOnce(sampleRes);
-      req = await postCredentials('user', 'user');
-      expect(req).toEqual(sampleRes);
-    } catch (e) {
-      console.log('Error receives a 200');
-      throw e;
-    }
-
+    mockAxios.post.mockReturnValueOnce(sampleRes);
+    req = await postCredentials('user', 'user');
+    
+    expect(req).toEqual(sampleRes);
     expect(mockAxios.post).toHaveBeenCalledTimes(1);
     expect(mockAxios.post).toHaveReturnedWith(sampleRes);
+  });
+
+  it('throws an error if the response is undefined', async () => {
+    
+    // really it should throw an error
+    mockAxios.post.mockImplementationOnce(() => Promise.reject('rejected'));
+    await expect(postCredentials('baduser', 'baduseruser')).rejects.toMatch('rejected');
+
   });
 });

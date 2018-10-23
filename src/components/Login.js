@@ -8,64 +8,72 @@ class Login extends Component {
     this.state = {
       username: '',
       pword: '',
-      error: null
-    }
+      error: null,
+    };
   }
 
-  handleInputChange = (e) => {
+  handleInputChange = e => {
     const val = e.target.value;
     const name = e.target.name;
     this.setState({
-      [name]: val
+      [name]: val,
     });
-  }
+  };
 
-  handleBtnClick = async (e) => {
+  handleBtnClick = async e => {
     e.preventDefault();
     try {
-      let postReq = await postCredentials(this.state.username, this.state.pword);
-
-      console.log(postReq);
-    }catch(e) {
+      let postReq = await postCredentials(
+        this.state.username,
+        this.state.pword
+      );
+      
+      // console.log(postReq);
+    } catch (e) {
       // Throw on error on an event handler
-      this.setState(() => {throw e; } )
+      this.setState(() => {
+        throw e;
+      });
     }
-  }
+  };
 
   render() {
-    return(
+    return (
       <div>
-        <h1>Login</h1> 
+        <h1>Login</h1>
         <form>
           <div className="form-row">
             <label>
               Username:
-              <input 
+              <input
                 className="input-username"
                 name="username"
-                onChange={(e) => {this.setState({ username: e.target.value})}} 
+                onChange={e => {
+                  this.setState({ username: e.target.value });
+                }}
               />
             </label>
           </div>
           <div className="form-row">
             <label>
               Password:
-              <input 
+              <input
                 className="input-password"
                 name="pword"
-                onChange={this.handleInputChange}  />
+                onChange={this.handleInputChange}
+              />
             </label>
           </div>
           <div className="form-row">
-            <Button 
-              onClick={this.handleBtnClick} 
+            <Button
+              onClick={this.handleBtnClick}
               text="Submit"
-              className="btn-submit" 
-              type="submit"/>
-          </div> 
+              className="btn-submit"
+              type="submit"
+            />
+          </div>
         </form>
       </div>
-      
     );
   }
 }
