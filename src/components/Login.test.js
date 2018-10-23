@@ -52,11 +52,12 @@ describe('Login', () => {
       expect(wrapper.find(btnElem)).toExist();
     });
 
-    // it('testing a class method', () => {
-    //   const mockSubmit = jest.fn();
-    //   wrapper.instance().testFn = mockSubmit;
-    //   wrapper.instance().testFn();
-    //   expect(mockSubmit).toHaveBeenCalled();
-    // });
+    it('sends a request to the backend', () => {
+      const mockSubmit = jest.fn();
+      wrapper.instance().handleBtnClick = mockSubmit;
+      wrapper.instance().handleBtnClick();
+      expect(mockSubmit).toHaveBeenCalled();
+    })
   });
+
 });

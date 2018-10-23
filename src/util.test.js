@@ -1,5 +1,8 @@
+// This is not a good set of tests for and api
+
 import mockAxios from './__mocks__/axios';
 import { postCredentials, ErrorMsg } from './util';
+
 
 describe('it posts the some data to the `API_URL`', () => {
   let req;
@@ -17,9 +20,9 @@ describe('it posts the some data to the `API_URL`', () => {
     try {
       req = await postCredentials('user', 'user');
       expect(req).toEqual(sampleData);
-    } catch (e) {
-      const error = new ErrorMsg(400, 'Error connecting to API');
-      expect(e).toEqual(error);
+    } catch(e) {
+      console.log('Error in it posts some data to the backend');
+      throw new Error(e);
     }
 
     expect(mockAxios.post).toHaveBeenCalledTimes(1);
@@ -37,32 +40,13 @@ describe('it posts the some data to the `API_URL`', () => {
       },
     };
 
-    mockAxios.post.mockReturnValueOnce(sampleRes);
-
-    req = await postCredentials('user', 'user');
-    expect(req).toEqual(sampleRes);
-
-    expect(mockAxios.post).toHaveBeenCalledTimes(1);
-    expect(mockAxios.post).toHaveReturnedWith(sampleRes);
-  });
-
-  it('does not receive a 200 response from the backend', async () => {
-    const sampleRes = {
-      status: 400,
-      data: {
-        message: 'Error connecting to API',
-      },
-    };
-
-    mockAxios.post.mockReturnValueOnce(sampleRes);
-
     try {
+      mockAxios.post.mockReturnValueOnce(sampleRes);
       req = await postCredentials('user', 'user');
       expect(req).toEqual(sampleRes);
-    } catch (e) {
-      //When there is a working api these values can be assigned dynamically
-      const error = new ErrorMsg(400, 'Error connecting to API');
-      expect(e).toEqual(error);
+    } catch(e) {
+      console.log('Error receives a 200');
+      throw new Error(e);
     }
 
     expect(mockAxios.post).toHaveBeenCalledTimes(1);

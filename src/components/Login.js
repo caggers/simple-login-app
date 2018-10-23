@@ -23,7 +23,7 @@ class Login extends Component {
   handleBtnClick = async (e) => {
     e.preventDefault();
     let postReq = await postCredentials(this.state.username, this.state.pword);
-    console.log(postReq);
+    // console.log(postReq);
   }
 
   render() {
