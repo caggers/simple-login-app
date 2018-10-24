@@ -27,7 +27,7 @@ describe('<ErrorBoundary />', () => {
     const spy = jest.spyOn(ErrorBoundary.prototype, 'componentDidCatch');
     const mounted = mount(
       <ErrorBoundary>
-        <ProblemChild />{' '}
+        <ProblemChild />
       </ErrorBoundary>
     );
 

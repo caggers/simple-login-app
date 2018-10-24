@@ -1,22 +1,52 @@
 // This isa questionable set of tests for and api
 import mockAxios from './__mocks__/axios';
-import { postCredentials } from './util';
+import { USERS, checkUser, postReq } from './util';
 
 describe('it posts the some data to the `API_URL`', () => {
   let req;
+  const username = 'user';
+  const sampleData = { data: { username: 'user', pword: 'user' } };
 
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  it('posts some data to the backend', async () => {
-    const sampleData = { data: { username: 'user', pword: 'user' } };
+  it('checks the user is in USERS array and it is', async () => {
+    const pos = checkUser('user', USERS);
+    expect(pos).toEqual([
+      {
+        username: 'user',
+        privileges: 'user',
+        id: '000',
+      },
+    ]);
 
+    mockAxios.post.mockResolvedValueOnce(sampleData);
+
+    let check =
+      pos !== false
+        ? await postReq('user', 'user')
+        : 'This user does not exist';
+
+    expect(check).toEqual(sampleData);
+  });
+
+  it('checks the user is in the USERS array and it is not', () => {
+    const neg = checkUser('baduser', USERS);
+    expect(neg).toEqual(false);
+
+    let check = neg !== false ? sampleData : 'This user does not exist';
+
+    expect(check).toEqual('This user does not exist');
+  });
+
+
+  it('posts some data to the backend', async () => {
     // Create a one off instance where the post function returns specific values
     mockAxios.post.mockImplementationOnce(() => Promise.resolve(sampleData));
 
-    req = await postCredentials('user', 'user');
-    
+    req = await postReq('user', 'user');
+
     expect(req).toEqual(sampleData);
     expect(mockAxios.post).toHaveBeenCalledTimes(1);
     expect(mockAxios.post).toHaveBeenCalledWith(
@@ -25,7 +55,7 @@ describe('it posts the some data to the `API_URL`', () => {
     );
   });
 
-  it('receives a 200 response from the backend', async () => {
+  it('receives a 200 response from the backend in postReq', async () => {
     const sampleRes = {
       status: 200,
       data: {
@@ -34,18 +64,19 @@ describe('it posts the some data to the `API_URL`', () => {
     };
 
     mockAxios.post.mockReturnValueOnce(sampleRes);
-    req = await postCredentials('user', 'user');
-    
+    req = await postReq('user', 'user');
+
     expect(req).toEqual(sampleRes);
     expect(mockAxios.post).toHaveBeenCalledTimes(1);
     expect(mockAxios.post).toHaveReturnedWith(sampleRes);
   });
 
-  it('throws an error if the response is undefined', async () => {
-    
-    // really it should throw an error
-    mockAxios.post.mockImplementationOnce(() => Promise.reject('rejected'));
-    await expect(postCredentials('baduser', 'baduseruser')).rejects.toMatch('rejected');
+  it('catches the error in postReq', async () => {
+    mockAxios.post.mockImplementationOnce(() => Promise.reject('error'));
+    expect.assertions(1);
 
+    return await postReq('baduser', 'badword').catch(e => {
+      expect(e).toEqual('error');
+    });
   });
 });

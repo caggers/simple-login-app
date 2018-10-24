@@ -9,8 +9,8 @@ describe('Login', () => {
     expect(wrapper).toMatchSnapshot();
   });
 
-  it('initialises a username and password in `state`', () => {
-    expect(wrapper.state()).toEqual({ username: '', pword: '', error: null });
+  it('initialises a username, password, error and isAuthenticated in `state`', () => {
+    expect(wrapper.state()).toEqual({ username: '', pword: '', error: null, isAuthenticated: false });
   });
 
   describe('User inputs', () => {
@@ -56,11 +56,17 @@ describe('Login', () => {
       const mockSubmit = jest.fn();
       wrapper.instance().handleBtnClick = mockSubmit;
       wrapper.instance().handleBtnClick();
-      expect(mockSubmit).toHaveBeenCalled();
+      expect(mockSubmit).toHaveBeenCalledTimes(1);
     });
 
-    it('throws to the `state` to trigger a remount of the component when there is an error', () => {
-      // TODO
+    it('catches the error of chandleButtonClick', async () => {
+      // TODO catch the error when it triggers in setState()
+      const checkUserCredentials = jest.fn().mockImplementationOnce(() => Promise.reject('error'));
+      return await checkUserCredentials().catch(e => expect(e).toEqual('error'));
     });
+
+    it('updates isAuthenticated in `state`', () => {
+      // expect(wrapper.state().isAuthenticated).toBe(true);
+    })
   });
 });

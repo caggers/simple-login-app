@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Button from './Button';
-import { postCredentials } from '../util';
+import { checkUserCredentials } from '../util';
 
 class Login extends Component {
   constructor() {
@@ -9,6 +9,7 @@ class Login extends Component {
       username: '',
       pword: '',
       error: null,
+      isAuthenticated: false
     };
   }
 
@@ -23,12 +24,19 @@ class Login extends Component {
   handleBtnClick = async e => {
     e.preventDefault();
     try {
-      let postReq = await postCredentials(
+      const postReq = await checkUserCredentials(
         this.state.username,
         this.state.pword
       );
+      // if(postReq.status === 200) {
+      //   this.setState({
+      //     isAuthenticated: true
+      //   })
+      // }else {
+      //   console.log(postReq)
+      // }
+      console.log(postReq);
       
-      // console.log(postReq);
     } catch (e) {
       // Throw on error on an event handler
       this.setState(() => {
