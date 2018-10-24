@@ -3,14 +3,20 @@ import { mount, shallow } from 'enzyme';
 import Login from './Login';
 
 describe('Login', () => {
-  let wrapper = shallow(<Login />);
+  const props = { authenticateUser: jest.fn() };
+  const wrapper = mount(<Login {...props} />);
 
   it('renders correctly', () => {
     expect(wrapper).toMatchSnapshot();
   });
 
-  it('initialises a username, password, error and isAuthenticated in `state`', () => {
-    expect(wrapper.state()).toEqual({ username: '', pword: '', error: null, isAuthenticated: false });
+  it('initialises a username, password, error in `state`', () => {
+    expect(wrapper.state()).toEqual({
+      username: '',
+      pword: '',
+      error: null,
+      errorDiv: false,
+    });
   });
 
   describe('User inputs', () => {
@@ -42,31 +48,76 @@ describe('Login', () => {
 
   describe('Submit Button', () => {
     const btnElem = `button.btn-submit`;
-    wrapper = mount(<Login />);
 
     beforeEach(() => {
-      wrapper.find(btnElem).simulate('click', { preventDefault() {} });
+      // wrapper.find(btnElem).simulate('click', { preventDefault() {} });
     });
+
+    afterEach(() => {});
 
     it('renders a `submit` button', () => {
       expect(wrapper.find(btnElem)).toExist();
     });
 
-    it('sends a request to the backend', () => {
-      const mockSubmit = jest.fn();
-      wrapper.instance().handleBtnClick = mockSubmit;
+    it('calls #handleBtnClick when clicked', () => {
+      const mockedBtnClick = jest.fn().mockImplementationOnce(() => {
+        // try {
+        Promise.resolve({});
+        // } catch (err) {
+        //   wrapper.setState(() => {throw err} );
+        // }
+      });
+      wrapper.instance().handleBtnClick = mockedBtnClick;
       wrapper.instance().handleBtnClick();
-      expect(mockSubmit).toHaveBeenCalledTimes(1);
+
+      expect(wrapper.instance().handleBtnClick).toBeCalledTimes(1);
     });
 
-    it('catches the error of chandleButtonClick', async () => {
-      // TODO catch the error when it triggers in setState()
-      const checkUserCredentials = jest.fn().mockImplementationOnce(() => Promise.reject('error'));
-      return await checkUserCredentials().catch(e => expect(e).toEqual('error'));
+    // it('calls checkUserCredentials #handleButtonClick', async () => {
+    //   const sampleRes = {
+    //     status: 200,
+    //     data: { message: 'User logged in with: $username' },
+    //   }
+    //   const checkUserCredentials = jest.fn().mockImplementationOnce(() =>
+    //     Promise.resolve(sampleRes)
+    //   );
+
+    //   const req = await checkUserCredentials('user', 'user');
+    //   expect(req).toEqual(sampleRes);
+    // });
+
+    // it('catches the error of #handleButtonClick', async () => {
+    //   // TODO catch the error when it triggers in setState()
+    //   const checkUserCredentials = jest
+    //     .fn()
+    //     .mockImplementationOnce(() => Promise.reject('error'));
+
+    //   return await checkUserCredentials().catch(e =>
+    //     expect(e).toEqual('error')
+    //   );
+    // });
+
+    it('calls #handleReturnedData with a valid user', () => {
+      const mHandleReturnedData = jest.fn().mockImplementation(() => {
+        wrapper.setState({ errorDiv: false });
+      });
+
+      wrapper.instance().handleReturnedData = mHandleReturnedData;
+      wrapper.instance().handleReturnedData();
+
+      expect(mHandleReturnedData).toHaveBeenCalledTimes(1);
     });
 
-    it('updates isAuthenticated in `state`', () => {
-      // expect(wrapper.state().isAuthenticated).toBe(true);
-    })
+    it('calls #handleReturnedData invalid user', () => {
+      const mHandleReturnedData = jest.fn().mockImplementation(() => {
+        wrapper.setState({ errorDiv: 'this is error text' });
+      });
+
+      wrapper.instance().handleReturnedData = mHandleReturnedData;
+      wrapper.instance().handleReturnedData();
+
+      expect(mHandleReturnedData).toHaveBeenCalledTimes(1);
+      expect(wrapper.find('.error-div').length).toBe(1);
+    });
   });
 });

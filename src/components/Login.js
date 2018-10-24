@@ -9,7 +9,7 @@ class Login extends Component {
       username: '',
       pword: '',
       error: null,
-      isAuthenticated: false
+      errorDiv: false
     };
   }
 
@@ -21,26 +21,28 @@ class Login extends Component {
     });
   };
 
-  handleBtnClick = async e => {
-    e.preventDefault();
+  handleReturnedData(postReq) {
+    if(postReq.status === 200) {
+      this.setState({ errorDiv: false });
+      this.props.authenticateUser();
+    } else {
+      this.setState({ errorDiv: postReq });
+    }
+  }
+
+  handleBtnClick = async event => {
+    event.preventDefault();
     try {
       const postReq = await checkUserCredentials(
         this.state.username,
         this.state.pword
       );
-      // if(postReq.status === 200) {
-      //   this.setState({
-      //     isAuthenticated: true
-      //   })
-      // }else {
-      //   console.log(postReq)
-      // }
-      console.log(postReq);
+      this.handleReturnedData(postReq);
       
-    } catch (e) {
+    } catch (error) {
       // Throw on error on an event handler
       this.setState(() => {
-        throw e;
+        throw error;
       });
     }
   };
@@ -81,6 +83,9 @@ class Login extends Component {
             />
           </div>
         </form>
+        { this.state.errorDiv && 
+          <div className="error-div">{this.state.errorDiv}</div>
+        }
       </div>
     );
   }

@@ -3,7 +3,10 @@
 exports[`App renders correctly 1`] = `
 <div>
   <ErrorBoundary>
-    <Login />
+    <Login
+      authenticateUser={[Function]}
+      className="login"
+    />
   </ErrorBoundary>
 </div>
 `;

@@ -4,7 +4,6 @@ import { USERS, checkUser, postReq } from './util';
 
 describe('it posts the some data to the `API_URL`', () => {
   let req;
-  const username = 'user';
   const sampleData = { data: { username: 'user', pword: 'user' } };
 
   afterEach(() => {
