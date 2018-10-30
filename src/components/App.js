@@ -22,7 +22,7 @@ class App extends Component {
           <div className="welcome-message">Welcome Back </div>
         ) : (
           <ErrorBoundary>
-            <Login authenticateUser={this.authenticateUser} className="login" />
+            <Login authenticateUser={this.authenticateUser} />
           </ErrorBoundary>
         )}
       </div>
