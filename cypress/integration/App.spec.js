@@ -7,7 +7,7 @@ describe('A user visits the App', () => {
     cy.get('.login');
   });
 
-  describe('eters an invvalid users credentials', () => {
+  describe('enters an invalid users credentials', () => {
     it('enters an invalid username', () => {
       cy.get('.input-username')
         .type(bad_user)
@@ -20,7 +20,7 @@ describe('A user visits the App', () => {
         .should('have.value', bad_user);
     });
 
-    it('clicks the submit btn without valid credentials', () => {
+    it('clicks the submit btn', () => {
       cy.get('.btn-submit').click();
       cy.get('.error-div').contains('This user does not exist');
     });
