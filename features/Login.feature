@@ -21,19 +21,19 @@ Scenario: Check User credentials for a registered User
 	And they pass
 	Then I am logged into the system
 	And I can see the App
-Examples: Valid
-| username 	| password 	|
-| admin 		| admin			|
-| user			| user 			|
+# Examples: Valid
+# | username 	| password 	|
+# | admin 		| admin			|
+# | user			| user 			|
 
 Scenario: Check User credentials for an unregistered User
 	Given I am not registered user logging in
 	When my invalid credentials are sent for authentication
 	And they do not pass
 	Then I see an error message
-Examples: Invalid
-| username 	| password 	|
-| 1234			| 5678			|
-| betty			| spagetti	|
+# Examples: Invalid
+# | username 	| password 	|
+# | 1234			| 5678			|
+# | betty			| spagetti	|
 
 

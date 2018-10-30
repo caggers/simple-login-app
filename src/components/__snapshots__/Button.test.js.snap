@@ -2,7 +2,7 @@
 
 exports[`Button renders correctly 1`] = `
 <button
-  className="btn-default"
+  className="btn-instance btn-default"
   onClick={[MockFunction]}
   type={null}
 >

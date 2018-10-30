@@ -43,7 +43,7 @@ exports[`Login renders correctly 1`] = `
           type="submit"
         >
           <button
-            className="btn-submit"
+            className="btn-instance btn-submit"
             onClick={[Function]}
             type="submit"
           >

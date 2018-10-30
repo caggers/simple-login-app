@@ -47,65 +47,52 @@ describe('Login', () => {
   });
 
   describe('Submit Button', () => {
-    const btnElem = `button.btn-submit`;
+    const btnElem = '.btn-submit';
 
     beforeEach(() => {
-      // wrapper.find(btnElem).simulate('click', { preventDefault() {} });
+      // wrapper.find('button.btn-instance').prop('onClick')();
     });
 
-    afterEach(() => {});
-
     it('renders a `submit` button', () => {
-      expect(wrapper.find(btnElem)).toExist();
+      expect(wrapper.find('.btn-instance')).toExist();
     });
 
     it('calls #handleBtnClick when clicked', () => {
-      const mockedBtnClick = jest.fn().mockImplementationOnce(() => {
-        // try {
-        Promise.resolve({});
-        // } catch (err) {
-        //   wrapper.setState(() => {throw err} );
-        // }
+      const mockedBtnClick = jest.fn(e => {
+        e.preventDefault();
+        Promise.resolve();
       });
       wrapper.instance().handleBtnClick = mockedBtnClick;
-      wrapper.instance().handleBtnClick();
+      wrapper.instance().handleBtnClick({ preventDefault() {} });
 
       expect(wrapper.instance().handleBtnClick).toBeCalledTimes(1);
     });
 
-    // it('calls checkUserCredentials #handleButtonClick', async () => {
-    //   const sampleRes = {
-    //     status: 200,
-    //     data: { message: 'User logged in with: $username' },
-    //   }
-    //   const checkUserCredentials = jest.fn().mockImplementationOnce(() =>
-    //     Promise.resolve(sampleRes)
-    //   );
-
-    //   const req = await checkUserCredentials('user', 'user');
-    //   expect(req).toEqual(sampleRes);
-    // });
-
-    // it('catches the error of #handleButtonClick', async () => {
-    //   // TODO catch the error when it triggers in setState()
-    //   const checkUserCredentials = jest
-    //     .fn()
-    //     .mockImplementationOnce(() => Promise.reject('error'));
-
-    //   return await checkUserCredentials().catch(e =>
-    //     expect(e).toEqual('error')
-    //   );
-    // });
-
     it('calls #handleReturnedData with a valid user', () => {
-      const mHandleReturnedData = jest.fn().mockImplementation(() => {
-        wrapper.setState({ errorDiv: false });
+      const mockAuthenticateUser = jest.fn(() => {
+        wrapper.props().isAuthenticated = true;
       });
 
-      wrapper.instance().handleReturnedData = mHandleReturnedData;
-      wrapper.instance().handleReturnedData();
+      const mHandleReturnedData = jest
+        .fn()
+        .mockImplementationOnce(ref => {
+          wrapper.setState({ errorDiv: false });
+          mockAuthenticateUser();
+        })
+        .mockImplementationOnce(ref => {
+          wrapper.setState({ errorDiv: ref });
+        });
 
+      wrapper.instance().handleReturnedData = mHandleReturnedData;
+
+      wrapper.instance().handleReturnedData('valid user ref');
       expect(mHandleReturnedData).toHaveBeenCalledTimes(1);
+      expect(wrapper.state().errorDiv).toBe(false);
+      expect(wrapper.props().isAuthenticated).toBe(true);
+
+      wrapper.instance().handleReturnedData('This user does not exist');
+      expect(mHandleReturnedData).toHaveBeenCalledTimes(2);
+      expect(wrapper.state().errorDiv).toBe('This user does not exist');
     });
 
     it('calls #handleReturnedData invalid user', () => {
