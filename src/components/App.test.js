@@ -1,9 +1,9 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import App from './App';
 
 describe('App', () => {
-  const app = shallow(<App />);
+  let app = mount(<App isAuthenticated={false} />);
   it('renders correctly', () => {
     expect(app).toMatchSnapshot();
   });
@@ -19,7 +19,6 @@ describe('App', () => {
   });
 
   it('renders the login component conditionally', () => {
-    app.setState({ isAuthenticated: false });
     expect(app.find('.login')).toExist();
   });
 

@@ -4,7 +4,9 @@ exports[`Login renders correctly 1`] = `
 <Login
   authenticateUser={[MockFunction]}
 >
-  <div>
+  <div
+    className="login"
+  >
     <h1>
       Login
     </h1>
