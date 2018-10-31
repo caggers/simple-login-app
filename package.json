@@ -6,7 +6,6 @@
     "axios": "^0.18.0",
     "cypress": "^3.1.0",
     "react": "^16.5.2",
-    "react-bootstrap": "^0.32.4",
     "react-dom": "^16.5.2",
     "react-scripts": "2.0.5"
   },
@@ -15,7 +14,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "cypress": "cypress open"
+    "cypress": "cypress open",
+    "cypress:record": "cypress run --record --key 8c3684a5-6ada-4031-8ac7-a86932412ee5"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -33,7 +33,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "cucumber": "^5.0.2",
+    "cypress-cucumber-preprocessor": "^1.6.0",
     "enzyme": "^3.7.0",
     "enzyme-adapter-react-16": "^1.6.0",
     "jest": "^23.6.0",

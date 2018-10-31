@@ -19,7 +19,7 @@ export function checkUser(username, userArray) {
   const matchUser = userArray.filter(user => {
     return user.username === username;
   });
-  return matchUser.length > 0 ? matchUser : false;
+  return matchUser.length >= 1 ? matchUser : [];
 }
 
 export async function postReq(user, pword) {
@@ -34,5 +34,7 @@ export async function postReq(user, pword) {
 
 export async function checkUserCredentials(user, pword) {
   const checkedUser = checkUser(user, USERS);
-  return checkedUser.length > 0 ? await postReq(user, pword) :'This user does not exist';
+  return checkedUser.length > 0
+    ? await postReq(user, pword)
+    : 'This user does not exist';
 }

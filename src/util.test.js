@@ -17,14 +17,11 @@ describe('it posts the some data to the `API_URL`', () => {
   });
 
   it('checks the user', () => {
-    const goodUser = checkUser('user', USERS);
-    expect(goodUser).toHaveLength(1);
-
-    const badUser = checkUser('baduser', USERS);
-    expect(badUser).toEqual(false);
+    expect(checkUser('user', USERS)).toHaveLength(1);
+    expect(checkUser('baduser', USERS)).toHaveLength(0);
   });
 
-  it('posts some data to the backend', async () => {
+  it('posts some data to the backend with #postReq', async () => {
     // Create a one off instance where the post function returns specific values
     mockAxios.post.mockImplementationOnce(() => Promise.resolve(sampleData));
     req = await postReq('user', 'user');
@@ -37,7 +34,7 @@ describe('it posts the some data to the `API_URL`', () => {
     );
   });
 
-  it('catches the error in postReq', async () => {
+  it('catches the error in #postReq', async () => {
     mockAxios.post.mockImplementationOnce(() => Promise.reject('error'));
     expect.assertions(1);
 
@@ -46,47 +43,71 @@ describe('it posts the some data to the `API_URL`', () => {
     });
   });
 
-//   it('checks a valid users credentials in #checkUserCredentials', async () => {
-//     mockAxios.post.mockImplementationOnce(() => Promise.resolve(sampleRes));
-//     req = await postReq('user', 'user');
+  it('mocks the #checkUserCredentials function', async () => {
+    const checkUser = jest
+      .fn()
+      .mockImplementationOnce(() => ['a user is returned'])
+      .mockImplementationOnce(() => []);
 
-//     const checkUserCredentials = jest
-//       .fn()
-//       .mockImplementationOnce((user, pword) => {
-//         const checkedUser = checkUser(user, USERS);
-//         if (checkedUser.length > 0) {
-//           return req;
-//         }
+    const mockUserCredentials = jest
+      .fn()
+      .mockImplementation((user, pword) => {
+        const checkedUser = checkUser(user, USERS);
+        return checkedUser.length > 0
+          ? 'A successful post request'
+          : 'This user does not exist';
+      });
 
-//         return 'This user does not exist';
-//       });
+    await mockUserCredentials('user', 'user');
+    expect(mockUserCredentials).toHaveBeenCalledTimes(1);
+    expect(mockUserCredentials).toHaveReturnedWith('A successful post request');
 
-//     checkUserCredentials('user', 'user');
+    await mockUserCredentials('baduser', 'user');
+    expect(mockUserCredentials).toHaveBeenCalledTimes(2);
+    expect(mockUserCredentials).toHaveReturnedWith('This user does not exist');
 
-//     expect(req).toEqual(sampleRes)
-//     expect(mockAxios.post).toHaveBeenCalledTimes(1);
-//     expect(mockAxios.post).toHaveBeenCalledWith('http://demo5348002.mockable.io/',
-//     sampleData);
-    
+  });
 
-//     // expect(checkUserCredentials).toHaveBeenCalledTimes(1);
-//     // expect(checkUserCredentials).toHaveReturnedWith(sampleRes);
-//     // expect(a).toEqual(sampleRes);
-//   });
+  //   it('checks a valid users credentials in #checkUserCredentials', async () => {
+  //     mockAxios.post.mockImplementationOnce(() => Promise.resolve(sampleRes));
+  //     req = await postReq('user', 'user');
 
-//   it('checks an invalid users credentials in #checkUserCredentials', () => {
-//     const checkUserCredentials = jest
-//       .fn()
-//       .mockImplementationOnce((user, pword) => {
-//         const checkedUser = checkUser(user, USERS);
-//         if (checkedUser.length > 0) {
-//           return 'this will not be called';
-//         }
-//         return 'This user does not exist';
-//       });
+  //     const checkUserCredentials = jest
+  //       .fn()
+  //       .mockImplementationOnce((user, pword) => {
+  //         const checkedUser = checkUser(user, USERS);
+  //         if (checkedUser.length > 0) {
+  //           return req;
+  //         }
 
-//     expect(checkUserCredentials('baduser', 'user')).toEqual(
-//       'This user does not exist'
-//     );
-//   });
+  //         return 'This user does not exist';
+  //       });
+
+  //     checkUserCredentials('user', 'user');
+
+  //     expect(req).toEqual(sampleRes)
+  //     expect(mockAxios.post).toHaveBeenCalledTimes(1);
+  //     expect(mockAxios.post).toHaveBeenCalledWith('http://demo5348002.mockable.io/',
+  //     sampleData);
+
+  //     // expect(checkUserCredentials).toHaveBeenCalledTimes(1);
+  //     // expect(checkUserCredentials).toHaveReturnedWith(sampleRes);
+  //     // expect(a).toEqual(sampleRes);
+  //   });
+
+  //   it('checks an invalid users credentials in #checkUserCredentials', () => {
+  //     const checkUserCredentials = jest
+  //       .fn()
+  //       .mockImplementationOnce((user, pword) => {
+  //         const checkedUser = checkUser(user, USERS);
+  //         if (checkedUser.length > 0) {
+  //           return 'this will not be called';
+  //         }
+  //         return 'This user does not exist';
+  //       });
+
+  //     expect(checkUserCredentials('baduser', 'user')).toEqual(
+  //       'This user does not exist'
+  //     );
+  //   });
 });
